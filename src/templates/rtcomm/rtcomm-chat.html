@@ -1,30 +1,29 @@
 <div>
-	<div class="panel panel-primary vertical-stretch">
-		<div class="panel-heading">
-			<span class="glyphicon glyphicon-comment"></span> Chat
-		</div>
+    <div class="panel panel-primary vertical-stretch">
+        <div class="panel-heading">
+            <span class="glyphicon glyphicon-comment"></span> Chat
+        </div>
 
-		<div class="panel-body">
-			<ul class="chat">
-				<li class="right clearfix" ng-repeat="chat in chatVM.chats">
-					<div id={{$index}} class="header">
-						<strong class="primary-font">{{chat.name}}</strong>
-						<small class="pull-right text-muted">
-							{{chat.time | date:'HH:mm:ss'}}
-						</small>
-					</div>
-					<p>{{chat.message}}</p>
-			    </li>
-			</ul>
-		</div>
-		<div class="panel-footer">
-			<div class="input-group">
-				<input id="chat-input" type="text" class="form-control input-sm"
-					placeholder="Type your message here..." type="text" ng-model="chatVM.message" ng-keypress="chatVM.keySendMessage($event)">
+        <div class="panel-body">
+            <ul class="chat">
+                <li class="right clearfix" ng-repeat="chat in chatVM.chats">
+                    <div id={{$index}} class="header">
+                        <strong class="primary-font">{{chat.message.fullName}}</strong>
+                        <small class="pull-right text-muted">
+                            {{chat.time | date:'HH:mm:ss'}}
+                        </small>
+                    </div>
+                    <p>{{chat.message.text}}</p>
+                </li>
+            </ul>
+        </div>
+        <div class="panel-footer">
+            <div class="input-group">
+                <input id="chat-input" type="text" class="form-control input-sm" placeholder="Type your message here..." type="text" ng-model="chatVM.message" ng-keypress="chatVM.keySendMessage($event)">
 				<span class="input-group-btn">
 					<button class="btn btn-primary btn-sm" id="btn-chat" ng-click="chatVM.sendMessage()" focusInput=true ng-disabled="(chatVM.chatActiveEndpointUUID == null)">Send</button>
 				</span>
-			</div>
-		</div>
-	</div>
+            </div>
+        </div>
+    </div>
 </div> <!-- chat list ng-controller div -->

@@ -50,7 +50,7 @@ module.exports = function(grunt) {
         expand: true,
         cwd: '<%= dirs.src %>',
         src: ['css/*.css'],
-        dest: '<%= dirs.dest %>',
+        dest: '<%= dirs.dest %>'
       }
     },
 
@@ -121,7 +121,7 @@ module.exports = function(grunt) {
       dev: {
         files: ['<%= dirs.src %>/**'],
         tasks: ['build']
-      },
+      }
     },
     wiredep: {
       task: {
@@ -157,8 +157,7 @@ module.exports = function(grunt) {
         }
 
       }
-    },
-
+    }
 
   });
 
