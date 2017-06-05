@@ -660,7 +660,7 @@
       if (mediaToEnable.indexOf('chat') > -1)
         endpoint.chat.enable();
 
-      if (mediaToEnable.indexOf('webrtc') > -1) {
+      if (mediaToEnable.indexOf('videoCall') > -1 || mediaToEnable.indexOf('call') > -1) {
         // Support turning off trickle ICE
         var trickleICE = true;
         if (mediaToEnable.indexOf('disableTrickleICE') > -1) {
@@ -669,6 +669,24 @@
         endpoint.webrtc.enable({
           'trickleICE': trickleICE
         });
+
+        // Enable option of only-audio
+        var broadcastVideo = true;
+        if (mediaToEnable.indexOf('call') > -1) {
+            broadcastVideo = false;
+        }
+        endpoint.config.webrtcConfig.broadcast.video = broadcastVideo;
+        endpoint.config.webrtcConfig.RTCOfferConstraints = (webrtcDetectedBrowser === 'firefox') ? {
+              'mandatory': {
+                  offerToReceiveAudio: true,
+                  offerToReceiveVideo: broadcastVideo
+              }
+          } : {
+              'mandatory': {
+                  OfferToReceiveAudio: true,
+                  OfferToReceiveVideo: broadcastVideo
+              }
+          };
       }
       _setActiveEndpoint(endpoint.id);
       endpoint.connect(calleeID);
