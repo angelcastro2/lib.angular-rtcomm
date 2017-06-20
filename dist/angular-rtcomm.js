@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  * Angular module for Rtcomm
- * @version v1.0.3 - 2016-08-10
+ * @version v1.0.5 - 2017-06-20
  * @link https://github.com/WASdev/lib.angular-rtcomm
  * @author Brian Pulito <brian_pulito@us.ibm.com> (https://github.com/bpulito)
  */
@@ -1064,7 +1064,7 @@ angular
       if (mediaToEnable.indexOf('chat') > -1)
         endpoint.chat.enable();
 
-      if (mediaToEnable.indexOf('webrtc') > -1) {
+      if (mediaToEnable.indexOf('videoCall') > -1 || mediaToEnable.indexOf('call') > -1) {
         // Support turning off trickle ICE
         var trickleICE = true;
         if (mediaToEnable.indexOf('disableTrickleICE') > -1) {
@@ -1073,6 +1073,24 @@ angular
         endpoint.webrtc.enable({
           'trickleICE': trickleICE
         });
+
+        // Enable option of only-audio
+        var broadcastVideo = true;
+        if (mediaToEnable.indexOf('call') > -1) {
+            broadcastVideo = false;
+        }
+        endpoint.config.webrtcConfig.broadcast.video = broadcastVideo;
+        endpoint.config.webrtcConfig.RTCOfferConstraints = (webrtcDetectedBrowser === 'firefox') ? {
+              'mandatory': {
+                  offerToReceiveAudio: true,
+                  offerToReceiveVideo: broadcastVideo
+              }
+          } : {
+              'mandatory': {
+                  OfferToReceiveAudio: true,
+                  OfferToReceiveVideo: broadcastVideo
+              }
+          };
       }
       _setActiveEndpoint(endpoint.id);
       endpoint.connect(calleeID);
@@ -2545,7 +2563,7 @@ angular.module('angular-rtcomm-ui').run(['$templateCache', function($templateCac
 
 
   $templateCache.put('templates/rtcomm/rtcomm-chat.html',
-    "<div><div class=\"panel panel-primary vertical-stretch\"><div class=\"panel-heading\"><span class=\"glyphicon glyphicon-comment\"></span> Chat</div><div class=\"panel-body\"><ul class=\"chat\"><li class=\"right clearfix\" ng-repeat=\"chat in chatVM.chats\"><div id=\"{{$index}}\" class=\"header\"><strong class=\"primary-font\">{{chat.message.fullName}}</strong> <small class=\"pull-right text-muted\">{{chat.time | date:'HH:mm:ss'}}</small></div><p>{{chat.message.text}}</p></li></ul></div><div class=\"panel-footer\"><div class=\"input-group\"><input id=\"chat-input\" type=\"text\" class=\"form-control input-sm\" placeholder=\"Type your message here...\" type=\"text\" ng-model=\"chatVM.message\" ng-keypress=\"chatVM.keySendMessage($event)\"> <span class=\"input-group-btn\"><button class=\"btn btn-primary btn-sm\" id=\"btn-chat\" ng-click=\"chatVM.sendMessage()\" focusinput=\"true\" ng-disabled=\"(chatVM.chatActiveEndpointUUID == null)\">Send</button></span></div></div></div></div><!-- chat list ng-controller div -->"
+    "<div><div class=\"panel panel-primary vertical-stretch\"><div class=\"panel-heading\"><span class=\"glyphicon glyphicon-comment\"></span> Chat</div><div class=\"panel-body\"><ul class=\"chat\"><li class=\"right clearfix\" ng-repeat=\"chat in chatVM.chats\"><div id=\"{{$index}}\" class=\"header\"><strong class=\"primary-font\">{{chat.message.fullName}}</strong> <small class=\"pull-right text-muted\">{{chat.time | date:'HH:mm:ss'}}</small></div><p>{{chat.message.text}}</p></li></ul></div><div class=\"panel-footer\"><div class=\"input-group\"><input id=\"chat-input\" type=\"text\" class=\"form-control input-sm\" placeholder=\"Escribe tu mensaje aquí...\" type=\"text\" ng-model=\"chatVM.message\" ng-keypress=\"chatVM.keySendMessage($event)\"> <span class=\"input-group-btn\"><button class=\"btn btn-primary btn-sm\" id=\"btn-chat\" ng-click=\"chatVM.sendMessage()\" focusinput=\"true\" ng-disabled=\"(chatVM.chatActiveEndpointUUID == null)\">Enviar</button></span></div></div></div></div><!-- chat list ng-controller div -->"
   );
 
 
@@ -2585,7 +2603,7 @@ angular.module('angular-rtcomm-ui').run(['$templateCache', function($templateCac
 
 
   $templateCache.put('templates/rtcomm/rtcomm-video.html',
-    "<div id=\"videoContainer\"><div id=\"selfViewContainer\"><video title=\"selfView\" id=\"selfView\" class=\"selfView\" autoplay muted></video></div><video title=\"remoteView\" id=\"remoteView\" class=\"remoteView\" autoplay></video><!-- video title=\"remoteView\" id=\"remoteView\" class=\"remoteView\" autoplay=\"true\" poster=\"../views/rtcomm/images/video_camera_big.png\"></video --></div>"
+    "<div id=\"videoContainer\"><div id=\"selfViewContainer\"><video title=\"selfView\" id=\"selfView\" class=\"selfView\" autoplay muted></video></div><video title=\"remoteView\" id=\"remoteView\" class=\"remoteView\" autoplay controls></video></div>"
   );
 
 }]);

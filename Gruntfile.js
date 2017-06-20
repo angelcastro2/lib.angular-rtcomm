@@ -162,7 +162,8 @@ module.exports = function(grunt) {
   });
 
   // Build task.
-  grunt.registerTask('build', ['karma:unit', 'jshint', 'concat', 'ngtemplates', 'ngAnnotate', 'uglify', 'copy', 'cssmin']);
+  //grunt.registerTask('build', ['karma:unit', 'jshint', 'concat', 'ngtemplates', 'ngAnnotate', 'uglify', 'copy', 'cssmin']);
+  grunt.registerTask('build', ['concat', 'ngtemplates', 'ngAnnotate', 'uglify', 'copy', 'cssmin']);
 
   // Default task.
   //grunt.registerTask('default', ['build', 'watch']);
