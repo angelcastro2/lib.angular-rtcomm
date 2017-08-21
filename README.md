@@ -200,3 +200,8 @@ This controller displays an outbound call modal:
 **RtcommCallModalController** 
 
 This doc is a work in progress. Still need to document all the init parameteres for each directive, more details on testing, etc.
+
+
+#Importante
+
+Para poder compilar instalar python(versión 2.7, la última no es compatible) y visual studio 2015 (falla con versiones superiores, no probado con otras anteriores).

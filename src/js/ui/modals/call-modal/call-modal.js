@@ -45,14 +45,14 @@
 
         vm.placeCall = function(size) {
 
-            var modalInstance = $uibModal.open({
+            /* var modalInstance = $uibModal.open({
                 templateUrl: 'templates/rtcomm/rtcomm-modal-call.html',
                 controller: 'RtcommCallModalInstanceController',
                 size: size,
                 resolve: {}
-            });
-
-            modalInstance.result.then(
+            }); */
+            RtcommService.placeCall(vm.calleeID, vm.mediaToEnable);
+            /* modalInstance.result.then(
                 function(resultName) {
                     $log.debug('rtcommCallModal: Calling calleeID: ' + vm.calleeID);
                     $log.debug('rtcommCallModal: CallerID: ' + resultName);
@@ -67,7 +67,7 @@
                 },
                 function() {
                     $log.info('Modal dismissed at: ' + new Date());
-                });
+                }); */
         };
 
         $scope.$on('rtcomm::init', function(event, success, details) {
