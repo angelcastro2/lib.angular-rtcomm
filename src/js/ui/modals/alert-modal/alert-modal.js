@@ -51,7 +51,17 @@
                 }
             });
 
-            modalInstance.result.then(
+
+            var alertingEndpointObject = RtcommService.getEndpoint(vm.alertingEndpointUUID);
+            
+            if (alertingEndpointObject) {
+                $log.debug('Accepting call from: ' + vm.caller + ' for endpoint: ' + vm.alertingEndpointUUID);
+                alertingEndpointObject.accept();
+                $rootScope.$broadcast('rtcomm::alert-success');
+                alertingEndpointObject = null;
+             }
+
+            /* modalInstance.result.then(
                 function() {
                     var alertingEndpointObject = RtcommService.getEndpoint(vm.alertingEndpointUUID);
 
@@ -69,7 +79,7 @@
                         alertingEndpointObject.reject();
                         alertingEndpointObject = null;
                     }
-                });
+                }); */
         };
 
         $scope.init = function(autoAnswerNewMedia) {

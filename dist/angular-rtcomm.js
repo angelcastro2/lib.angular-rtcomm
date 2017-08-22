@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  * Angular module for Rtcomm
- * @version v1.0.6 - 2017-08-22
+ * @version v1.0.7 - 2017-08-22
  * @link https://github.com/WASdev/lib.angular-rtcomm
  * @author Brian Pulito <brian_pulito@us.ibm.com> (https://github.com/bpulito)
  */
@@ -2389,7 +2389,17 @@ angular
                 }
             });
 
-            modalInstance.result.then(
+
+            var alertingEndpointObject = RtcommService.getEndpoint(vm.alertingEndpointUUID);
+            
+            if (alertingEndpointObject) {
+                $log.debug('Accepting call from: ' + vm.caller + ' for endpoint: ' + vm.alertingEndpointUUID);
+                alertingEndpointObject.accept();
+                $rootScope.$broadcast('rtcomm::alert-success');
+                alertingEndpointObject = null;
+             }
+
+            /* modalInstance.result.then(
                 function() {
                     var alertingEndpointObject = RtcommService.getEndpoint(vm.alertingEndpointUUID);
 
@@ -2407,7 +2417,7 @@ angular
                         alertingEndpointObject.reject();
                         alertingEndpointObject = null;
                     }
-                });
+                }); */
         };
 
         $scope.init = function(autoAnswerNewMedia) {
