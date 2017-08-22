@@ -39,7 +39,7 @@
 
         vm.showAlerting = function(size) {
 
-            var modalInstance = $uibModal.open({
+            /* var modalInstance = $uibModal.open({
                 templateUrl: 'templates/rtcomm/rtcomm-modal-alert.html',
                 controller: 'RtcommAlertModalInstanceController',
                 size: size,
@@ -49,7 +49,7 @@
                         return vm.caller;
                     }
                 }
-            });
+            }); */
 
 
             var alertingEndpointObject = RtcommService.getEndpoint(vm.alertingEndpointUUID);

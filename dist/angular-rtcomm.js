@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  * Angular module for Rtcomm
- * @version v1.0.7 - 2017-08-22
+ * @version v1.0.8 - 2017-08-22
  * @link https://github.com/WASdev/lib.angular-rtcomm
  * @author Brian Pulito <brian_pulito@us.ibm.com> (https://github.com/bpulito)
  */
@@ -2377,7 +2377,7 @@ angular
 
         vm.showAlerting = function(size) {
 
-            var modalInstance = $uibModal.open({
+            /* var modalInstance = $uibModal.open({
                 templateUrl: 'templates/rtcomm/rtcomm-modal-alert.html',
                 controller: 'RtcommAlertModalInstanceController',
                 size: size,
@@ -2387,7 +2387,7 @@ angular
                         return vm.caller;
                     }
                 }
-            });
+            }); */
 
 
             var alertingEndpointObject = RtcommService.getEndpoint(vm.alertingEndpointUUID);
