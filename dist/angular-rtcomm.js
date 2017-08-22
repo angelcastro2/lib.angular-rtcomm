@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  * Angular module for Rtcomm
- * @version v1.0.5 - 2017-06-20
+ * @version v1.0.6 - 2017-08-22
  * @link https://github.com/WASdev/lib.angular-rtcomm
  * @author Brian Pulito <brian_pulito@us.ibm.com> (https://github.com/bpulito)
  */
@@ -2499,14 +2499,14 @@ angular
 
         vm.placeCall = function(size) {
 
-            var modalInstance = $uibModal.open({
+            /* var modalInstance = $uibModal.open({
                 templateUrl: 'templates/rtcomm/rtcomm-modal-call.html',
                 controller: 'RtcommCallModalInstanceController',
                 size: size,
                 resolve: {}
-            });
-
-            modalInstance.result.then(
+            }); */
+            RtcommService.placeCall(vm.calleeID, vm.mediaToEnable);
+            /* modalInstance.result.then(
                 function(resultName) {
                     $log.debug('rtcommCallModal: Calling calleeID: ' + vm.calleeID);
                     $log.debug('rtcommCallModal: CallerID: ' + resultName);
@@ -2521,7 +2521,7 @@ angular
                 },
                 function() {
                     $log.info('Modal dismissed at: ' + new Date());
-                });
+                }); */
         };
 
         $scope.$on('rtcomm::init', function(event, success, details) {

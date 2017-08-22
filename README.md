@@ -204,4 +204,8 @@ This doc is a work in progress. Still need to document all the init parameteres 
 
 #Importante
 
-Para poder compilar instalar python(versión 2.7, la última no es compatible) y visual studio 2015 (falla con versiones superiores, no probado con otras anteriores).
+Para poder compilar instalar python(versión 2.7, la última no es compatible) y visual studio 2015 con todo lo de C++ (falla con versiones superiores, no probado con otras anteriores).
+
+compilar con grunt build, npm falla.
+
+* Es posible que con instalar las standalone tools de c++ que proporciona microsoft se pueda compilar sin necesidad de visual studio
