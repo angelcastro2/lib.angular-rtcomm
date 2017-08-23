@@ -208,4 +208,6 @@ Para poder compilar instalar python(versión 2.7, la última no es compatible) y
 
 compilar con grunt build, npm falla.
 
-* Es posible que con instalar las standalone tools de c++ que proporciona microsoft se pueda compilar sin necesidad de visual studio
+* Es posible que con instalar las standalone tools de c++ que proporciona microsoft se pueda compilar sin necesidad de visual studio.
+
+* Para que se comunique con el backend de la aplicacion y pueda guardar/recuperar mensajes es necesario pasarle una url y el token de la cabecera de autenticación. 

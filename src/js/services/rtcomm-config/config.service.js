@@ -48,7 +48,9 @@
       userid: '',
       presence: {
         topic: ''
-      }
+      },
+      urlMensajes: '',
+      authHeader: ''
     };
 
     //Rtcomm Endpoint Config Defaults
@@ -89,7 +91,9 @@
         presence: {
           topic: (typeof config.presenceTopic !== 'undefined') ? config.presenceTopic : providerConfig.presence.topic,
         },
-        userid: (typeof config.userid !== 'undefined') ? config.userid : providerConfig.userid
+        userid: (typeof config.userid !== 'undefined') ? config.userid : providerConfig.userid,
+        urlMensajes: (typeof config.urlMensajes !== 'undefined')? config.urlMensajes : providerConfig.urlMensajes,
+        authHeader: (typeof config.authHeader !== 'undefined')? config.authHeader : providerConfig.authHeader,
       };
 
       //Media Configuration

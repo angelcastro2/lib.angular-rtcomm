@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  * Angular module for Rtcomm
- * @version v1.0.9 - 2017-08-22
+ * @version v1.0.10 - 2017-08-23
  * @link https://github.com/WASdev/lib.angular-rtcomm
  * @author Brian Pulito <brian_pulito@us.ibm.com> (https://github.com/bpulito)
  */
@@ -291,7 +291,9 @@ angular
       userid: '',
       presence: {
         topic: ''
-      }
+      },
+      urlMensajes: '',
+      authHeader: ''
     };
 
     //Rtcomm Endpoint Config Defaults
@@ -332,7 +334,9 @@ angular
         presence: {
           topic: (typeof config.presenceTopic !== 'undefined') ? config.presenceTopic : providerConfig.presence.topic,
         },
-        userid: (typeof config.userid !== 'undefined') ? config.userid : providerConfig.userid
+        userid: (typeof config.userid !== 'undefined') ? config.userid : providerConfig.userid,
+        urlMensajes: (typeof config.urlMensajes !== 'undefined')? config.urlMensajes : providerConfig.urlMensajes,
+        authHeader: (typeof config.authHeader !== 'undefined')? config.authHeader : providerConfig.authHeader,
       };
 
       //Media Configuration
@@ -957,6 +961,24 @@ angular
       if (session === null) session = RtcommSessions.createSession(endpointUUID);
 
       session.chats.push(chat);
+      //recuperar la url y la cabecera de autentcacion de la configuracion y luego hacer la peticion con ellos
+      var configuracion = RtcommConfigService.getProviderConfig();
+      //comprobamos si están definidos los parámetros de configuración, si no lo están no hacemos la petición
+      if(configuracion.urlMensajes){
+      // aqui hacemos un post a la url indicada en la configuracón para guardar los mensajes
+        $http({
+          method: 'POST',
+          url: configuracion.urlMensajes,
+          params: {},
+          headers: {'Authorization': configuracion.authHeader},
+          data: chat
+        }).then(function (response) {
+          //no se hace nada
+        }).catch(function (response) {
+          $log.error('rtcomm-service: ChatMessage: ERROR: fallo guardando mensajes en el servidor');
+        });
+
+      }
 
       myEndpointProvider.getRtcommEndpoint(endpointUUID).chat.send(chat.message);
 
@@ -1094,6 +1116,29 @@ angular
       }
       _setActiveEndpoint(endpoint.id);
       endpoint.connect(calleeID);
+      //mirar si se puede hacer aqui un get a la url especificada en la configuracion para recuperar los mensajes
+      var configuracion = RtcommConfigService.getProviderConfig();
+      if(configuracion.urlMensajes){
+        // aqui hacemos un post a la url indicada en la configuracón para guardar los mensajes
+          $http({
+            method: 'GET',
+            url: configuracion.urlMensajes,
+            params: {},
+            headers: {'Authorization': configuracion.authHeader}
+          }).then(function (response) {
+            var session;
+            //	Save this chat in the local session store
+            session = RtcommSessions.getSession(endpoint.id);
+            if (session === null) session = RtcommSessions.createSession(endpoint.id);
+      
+            session.chats.push(chat);
+
+          }).catch(function (response) {
+            $log.error('rtcomm-service: ChatMessage: ERROR: fallo recuperando mensajes en el servidor');
+          });
+  
+        }
+
       return (endpoint.id);
     }
 
