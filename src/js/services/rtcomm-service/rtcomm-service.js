@@ -553,11 +553,19 @@
       if (session === null) session = RtcommSessions.createSession(endpointUUID);
 
       session.chats.push(chat);
-      //recuperar la url y la cabecera de autentcacion de la configuracion y luego hacer la peticion con ellos
+      //recuperar la url y la cabecera de autenticacion de la configuracion y luego hacer la peticion con ellos
       var configuracion = RtcommConfigService.getProviderConfig();
       //comprobamos si están definidos los parámetros de configuración, si no lo están no hacemos la petición
       if(configuracion.urlMensajes){
       // aqui hacemos un post a la url indicada en la configuracón para guardar los mensajes
+        //antes de hacer nada guardamos en el objeto chat el nombre del usuario que recibe el mensaje
+        if(configuracion.usuarioReceptor){
+          chat.nameUsuarioRecibe = configuracion.usuarioReceptor;
+        }
+        if(configuracion.grupo){
+          chat.grupo = configuracion.grupo;
+        }
+        
         $http({
           method: 'POST',
           url: configuracion.urlMensajes,
@@ -711,22 +719,23 @@
       //mirar si se puede hacer aqui un get a la url especificada en la configuracion para recuperar los mensajes
       var configuracion = RtcommConfigService.getProviderConfig();
       if(configuracion.urlMensajes){
-        // aqui hacemos un post a la url indicada en la configuracón para guardar los mensajes
+        // aqui hacemos un get a la url indicada en la configuracón para recupèrar los mensajes
           $http({
             method: 'GET',
             url: configuracion.urlMensajes,
-            params: {},
+            params: {loginReceptor: configuracion.usuarioReceptor,
+              idgrupo: configuracion.grupo },
             headers: {'Authorization': configuracion.authHeader}
           }).then(function (response) {
             var session;
             //	Save this chat in the local session store
             session = RtcommSessions.getSession(endpoint.id);
             if (session === null) session = RtcommSessions.createSession(endpoint.id);
-      
+            // almacenamos los chats en la sesion
             session.chats.push(chat);
 
           }).catch(function (response) {
-            $log.error('rtcomm-service: ChatMessage: ERROR: fallo recuperando mensajes en el servidor');
+            $log.error('rtcomm-service: PlaceCall: ERROR: fallo recuperando mensajes en el servidor');
           });
   
         }

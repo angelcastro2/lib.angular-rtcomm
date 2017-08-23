@@ -94,6 +94,8 @@
         userid: (typeof config.userid !== 'undefined') ? config.userid : providerConfig.userid,
         urlMensajes: (typeof config.urlMensajes !== 'undefined')? config.urlMensajes : providerConfig.urlMensajes,
         authHeader: (typeof config.authHeader !== 'undefined')? config.authHeader : providerConfig.authHeader,
+        usuarioReceptor: (typeof config.usuarioReceptor !== 'undefined')? config.usuarioReceptor : providerConfig.usuarioReceptor,
+        grupo: (typeof config.grupo !== 'undefined')? config.grupo : providerConfig.grupo,
       };
 
       //Media Configuration
