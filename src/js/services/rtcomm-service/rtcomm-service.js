@@ -554,7 +554,7 @@
 
       session.chats.push(chat);
       //recuperar la url y la cabecera de autenticacion de la configuracion y luego hacer la peticion con ellos
-      var configuracion = RtcommConfigService.getProviderConfig();
+      var configuracion = RtcommConfigService.getCustomConfig();
       //comprobamos si están definidos los parámetros de configuración, si no lo están no hacemos la petición
       if(configuracion.urlMensajes){
       // aqui hacemos un post a la url indicada en la configuracón para guardar los mensajes
@@ -717,7 +717,7 @@
       _setActiveEndpoint(endpoint.id);
       endpoint.connect(calleeID);
       //mirar si se puede hacer aqui un get a la url especificada en la configuracion para recuperar los mensajes
-      var configuracion = RtcommConfigService.getProviderConfig();
+      var configuracion = RtcommConfigService.getCustomConfig();
       if(configuracion.urlMensajes){
         // aqui hacemos un get a la url indicada en la configuracón para recupèrar los mensajes
           $http({

@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  * Angular module for Rtcomm
- * @version v1.0.13 - 2017-08-28
+ * @version v1.0.14 - 2017-08-28
  * @link https://github.com/WASdev/lib.angular-rtcomm
  * @author Brian Pulito <brian_pulito@us.ibm.com> (https://github.com/bpulito)
  */
@@ -293,8 +293,17 @@ angular
         topic: ''
       },
       urlMensajes: '',
-      authHeader: ''
+      authHeader: '',
+      usuarioReceptor: '',
+      grupo: ''
     };
+
+    var customConfig = {
+      urlMensajes: '',
+      authHeader: '',
+      usuarioReceptor: '',
+      grupo: ''
+    }
 
     //Rtcomm Endpoint Config Defaults
     var mediaConfig = {
@@ -334,12 +343,15 @@ angular
         presence: {
           topic: (typeof config.presenceTopic !== 'undefined') ? config.presenceTopic : providerConfig.presence.topic,
         },
-        userid: (typeof config.userid !== 'undefined') ? config.userid : providerConfig.userid,
+        userid: (typeof config.userid !== 'undefined') ? config.userid : providerConfig.userid
+      };
+      //configuracion personalizada para soportar nuevos elementos a parte de los de rtcomm
+      customConfig = {
         urlMensajes: (typeof config.urlMensajes !== 'undefined')? config.urlMensajes : providerConfig.urlMensajes,
         authHeader: (typeof config.authHeader !== 'undefined')? config.authHeader : providerConfig.authHeader,
         usuarioReceptor: (typeof config.usuarioReceptor !== 'undefined')? config.usuarioReceptor : providerConfig.usuarioReceptor,
         grupo: (typeof config.grupo !== 'undefined')? config.grupo : providerConfig.grupo
-      };
+      }
 
       //Media Configuration
       mediaConfig = {
@@ -403,6 +415,10 @@ angular
 
     function getMediaConfig() {
       return mediaConfig;
+    }
+
+    function getCustomConfig() {
+      return customConfig;
     }
   }
   RtcommConfigService.$inject = ["$location", "$log", "$window"];
@@ -964,7 +980,7 @@ angular
 
       session.chats.push(chat);
       //recuperar la url y la cabecera de autenticacion de la configuracion y luego hacer la peticion con ellos
-      var configuracion = RtcommConfigService.getProviderConfig();
+      var configuracion = RtcommConfigService.getCustomConfig();
       //comprobamos si están definidos los parámetros de configuración, si no lo están no hacemos la petición
       if(configuracion.urlMensajes){
       // aqui hacemos un post a la url indicada en la configuracón para guardar los mensajes
@@ -1127,7 +1143,7 @@ angular
       _setActiveEndpoint(endpoint.id);
       endpoint.connect(calleeID);
       //mirar si se puede hacer aqui un get a la url especificada en la configuracion para recuperar los mensajes
-      var configuracion = RtcommConfigService.getProviderConfig();
+      var configuracion = RtcommConfigService.getCustomConfig();
       if(configuracion.urlMensajes){
         // aqui hacemos un get a la url indicada en la configuracón para recupèrar los mensajes
           $http({

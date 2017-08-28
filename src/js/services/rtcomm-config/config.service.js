@@ -50,8 +50,17 @@
         topic: ''
       },
       urlMensajes: '',
-      authHeader: ''
+      authHeader: '',
+      usuarioReceptor: '',
+      grupo: ''
     };
+
+    var customConfig = {
+      urlMensajes: '',
+      authHeader: '',
+      usuarioReceptor: '',
+      grupo: ''
+    }
 
     //Rtcomm Endpoint Config Defaults
     var mediaConfig = {
@@ -91,12 +100,15 @@
         presence: {
           topic: (typeof config.presenceTopic !== 'undefined') ? config.presenceTopic : providerConfig.presence.topic,
         },
-        userid: (typeof config.userid !== 'undefined') ? config.userid : providerConfig.userid,
+        userid: (typeof config.userid !== 'undefined') ? config.userid : providerConfig.userid
+      };
+      //configuracion personalizada para soportar nuevos elementos a parte de los de rtcomm
+      customConfig = {
         urlMensajes: (typeof config.urlMensajes !== 'undefined')? config.urlMensajes : providerConfig.urlMensajes,
         authHeader: (typeof config.authHeader !== 'undefined')? config.authHeader : providerConfig.authHeader,
         usuarioReceptor: (typeof config.usuarioReceptor !== 'undefined')? config.usuarioReceptor : providerConfig.usuarioReceptor,
         grupo: (typeof config.grupo !== 'undefined')? config.grupo : providerConfig.grupo
-      };
+      }
 
       //Media Configuration
       mediaConfig = {
@@ -160,6 +172,10 @@
 
     function getMediaConfig() {
       return mediaConfig;
+    }
+
+    function getCustomConfig() {
+      return customConfig;
     }
   }
 })();
