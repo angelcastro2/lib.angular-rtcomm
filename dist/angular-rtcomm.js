@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  * Angular module for Rtcomm
- * @version v1.0.14 - 2017-08-28
+ * @version v1.0.15 - 2017-08-28
  * @link https://github.com/WASdev/lib.angular-rtcomm
  * @author Brian Pulito <brian_pulito@us.ibm.com> (https://github.com/bpulito)
  */
@@ -278,7 +278,8 @@ angular
       getRingBackTone: getRingBackTone,
       getRtcommDebug: getRtcommDebug,
       isRtcommDisabled: isRtcommDisabled,
-      getMediaConfig: getMediaConfig
+      getMediaConfig: getMediaConfig,
+      getCustomConfig: getCustomConfig
     };
 
     //Default provider

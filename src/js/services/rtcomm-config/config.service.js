@@ -35,7 +35,8 @@
       getRingBackTone: getRingBackTone,
       getRtcommDebug: getRtcommDebug,
       isRtcommDisabled: isRtcommDisabled,
-      getMediaConfig: getMediaConfig
+      getMediaConfig: getMediaConfig,
+      getCustomConfig: getCustomConfig
     };
 
     //Default provider
