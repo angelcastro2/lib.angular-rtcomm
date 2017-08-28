@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  * Angular module for Rtcomm
- * @version v1.0.15 - 2017-08-28
+ * @version v1.0.16 - 2017-08-28
  * @link https://github.com/WASdev/lib.angular-rtcomm
  * @author Brian Pulito <brian_pulito@us.ibm.com> (https://github.com/bpulito)
  */
@@ -292,11 +292,7 @@ angular
       userid: '',
       presence: {
         topic: ''
-      },
-      urlMensajes: '',
-      authHeader: '',
-      usuarioReceptor: '',
-      grupo: ''
+      }
     };
 
     var customConfig = {
@@ -348,10 +344,10 @@ angular
       };
       //configuracion personalizada para soportar nuevos elementos a parte de los de rtcomm
       customConfig = {
-        urlMensajes: (typeof config.urlMensajes !== 'undefined')? config.urlMensajes : providerConfig.urlMensajes,
-        authHeader: (typeof config.authHeader !== 'undefined')? config.authHeader : providerConfig.authHeader,
-        usuarioReceptor: (typeof config.usuarioReceptor !== 'undefined')? config.usuarioReceptor : providerConfig.usuarioReceptor,
-        grupo: (typeof config.grupo !== 'undefined')? config.grupo : providerConfig.grupo
+        urlMensajes: (typeof config.urlMensajes !== 'undefined')? config.urlMensajes : customConfig.urlMensajes,
+        authHeader: (typeof config.authHeader !== 'undefined')? config.authHeader : customConfig.authHeader,
+        usuarioReceptor: (typeof config.usuarioReceptor !== 'undefined')? config.usuarioReceptor : customConfig.usuarioReceptor,
+        grupo: (typeof config.grupo !== 'undefined')? config.grupo : customConfig.grupo
       }
 
       //Media Configuration
