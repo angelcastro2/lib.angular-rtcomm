@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  * Angular module for Rtcomm
- * @version v1.0.37 - 2017-08-29
+ * @version v1.0.38 - 2017-08-29
  * @link https://github.com/WASdev/lib.angular-rtcomm
  * @author Brian Pulito <brian_pulito@us.ibm.com> (https://github.com/bpulito)
  */
@@ -522,7 +522,9 @@ angular
 
       setViewSelector: setViewSelector,
 
-      setVideoView: setVideoView
+      setVideoView: setVideoView,
+
+      getChatsAnteriores: getChatsAnteriores
     };
 
 
@@ -1006,11 +1008,7 @@ angular
 
     }
 
-    function getChats(endpointUUID) {
-      if (typeof endpointUUID !== 'undefined' && endpointUUID != null) {
-        var session = RtcommSessions.getSession(endpointUUID);
-      }
-
+    function getChatsAnteriores(){
       //mirar si se puede hacer aqui un get a la url especificada en la configuracion para recuperar los mensajes
 
       var deferred = $q.defer();
@@ -1047,6 +1045,49 @@ angular
         }
         return deferred.promise;
 
+    }
+
+    function getChats(endpointUUID) {
+      if (typeof endpointUUID !== 'undefined' && endpointUUID != null) {
+        var session = RtcommSessions.getSession(endpointUUID);
+      }
+
+      /* //mirar si se puede hacer aqui un get a la url especificada en la configuracion para recuperar los mensajes
+
+      var deferred = $q.defer();
+      var configuracion = RtcommConfigService.getCustomConfig();
+      var mensajes = [];
+      var tmp = null;
+      if(configuracion.urlMensajes){
+        // aqui hacemos un get a la url indicada en la configuracón para recupèrar los mensajes
+          $http({
+            method: 'GET',
+            url: configuracion.urlMensajes,
+            params: {loginReceptor: configuracion.usuarioReceptor,
+              idgrupo: configuracion.grupo },
+            headers: {'Authorization': configuracion.authHeader}
+          }).then(function (response) {
+
+            for(var i=0; i< response.data.length; i++){
+              tmp = {
+                time: response.data[i].time,
+                name: response.data[i].name,
+                message: { text: response.data[i].message.text, fullName: '' }
+              };
+              mensajes.push(tmp);
+              tmp = null;
+            }
+            deferred.resolve(mensajes);
+          
+          }).catch(function (response) {
+            $log.error('rtcomm-service: getChats: ERROR: fallo recuperando mensajes en el servidor');
+            deferred.resolve([]);
+          });
+         
+  
+        }
+        return deferred.promise;
+ */
     }
 
     function isWebrtcConnected(endpointUUID) {
@@ -2038,9 +2079,8 @@ angular
     /* @ngInject */
     function ChatController($scope, RtcommService, $log) {
         var vm = this;
-        vm.chats = [];
         vm.chatActiveEndpointUUID = RtcommService.getActiveEndpoint();
-        //vm.chats = RtcommService.getChats(vm.chatActiveEndpointUUID);
+        vm.chats = RtcommService.getChats(vm.chatActiveEndpointUUID);
 
         vm.keySendMessage = function (keyEvent) {
             if (keyEvent.which === 13)
@@ -2066,7 +2106,9 @@ angular
 
             //	The data model for the chat is maintained in the RtcommService.
             vm.chats = [];
-            RtcommService.getChats(endpointUUID).then(function(mensajes) {
+            RtcommService.getChats(endpointUUID);
+
+            RtcommService.getChatsAnteriores().then(function(mensajes) {
                 vm.chats = mensajes;
             });
            
@@ -2076,12 +2118,15 @@ angular
         });
 
         $scope.$on('noEndpointActivated', function (event) {
-            vm.chats = [];
-            
-            RtcommService.getChats(endpointUUID).then(function(mensajes) {
-                vm.chats = mensajes;
-            });
+            RtcommService.getChats(endpointUUID);
+            if(!vm.chats){
+                vm.chats = [];
+                RtcommService.getChatsAnteriores().then(function(mensajes) {
+                    vm.chats = mensajes;
+                });
+            }            
             vm.chatActiveEndpointUUID = null;
+
         });
     }
 })();

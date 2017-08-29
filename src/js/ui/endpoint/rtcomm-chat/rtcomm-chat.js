@@ -83,9 +83,8 @@
     /* @ngInject */
     function ChatController($scope, RtcommService, $log) {
         var vm = this;
-        vm.chats = [];
         vm.chatActiveEndpointUUID = RtcommService.getActiveEndpoint();
-        //vm.chats = RtcommService.getChats(vm.chatActiveEndpointUUID);
+        vm.chats = RtcommService.getChats(vm.chatActiveEndpointUUID);
 
         vm.keySendMessage = function (keyEvent) {
             if (keyEvent.which === 13)
@@ -111,7 +110,9 @@
 
             //	The data model for the chat is maintained in the RtcommService.
             vm.chats = [];
-            RtcommService.getChats(endpointUUID).then(function(mensajes) {
+            RtcommService.getChats(endpointUUID);
+
+            RtcommService.getChatsAnteriores().then(function(mensajes) {
                 vm.chats = mensajes;
             });
            
@@ -121,12 +122,15 @@
         });
 
         $scope.$on('noEndpointActivated', function (event) {
-            vm.chats = [];
-            
-            RtcommService.getChats(endpointUUID).then(function(mensajes) {
-                vm.chats = mensajes;
-            });
+            RtcommService.getChats(endpointUUID);
+            if(!vm.chats){
+                vm.chats = [];
+                RtcommService.getChatsAnteriores().then(function(mensajes) {
+                    vm.chats = mensajes;
+                });
+            }            
             vm.chatActiveEndpointUUID = null;
+
         });
     }
 })();
