@@ -78,10 +78,10 @@
     }
 
     //Controller should be used to listen for events from Rtcmo
-    ChatController.$inject = ['$scope', 'RtcommService', '$log'];
+    ChatController.$inject = ['$scope', 'RtcommService', '$log', 'RtcommConfigService'];
 
     /* @ngInject */
-    function ChatController($scope, RtcommService, $log) {
+    function ChatController($scope, RtcommService, $log, RtcommConfigService) {
         var vm = this;
 
         vm.chatActiveEndpointUUID = RtcommService.getActiveEndpoint();
