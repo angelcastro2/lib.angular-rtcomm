@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  * Angular module for Rtcomm
- * @version v1.0.36 - 2017-08-29
+ * @version v1.0.37 - 2017-08-29
  * @link https://github.com/WASdev/lib.angular-rtcomm
  * @author Brian Pulito <brian_pulito@us.ibm.com> (https://github.com/bpulito)
  */
@@ -1007,15 +1007,9 @@ angular
     }
 
     function getChats(endpointUUID) {
-      /* if (typeof endpointUUID !== 'undefined' && endpointUUID != null) {
+      if (typeof endpointUUID !== 'undefined' && endpointUUID != null) {
         var session = RtcommSessions.getSession(endpointUUID);
-        if (session !== null)
-          return (session.chats);
-        else
-          return (null);
-      } else{
-          return (null);
-      } */
+      }
 
       //mirar si se puede hacer aqui un get a la url especificada en la configuracion para recuperar los mensajes
 

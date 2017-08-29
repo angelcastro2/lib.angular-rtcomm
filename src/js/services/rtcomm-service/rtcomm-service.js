@@ -584,15 +584,9 @@
     }
 
     function getChats(endpointUUID) {
-      /* if (typeof endpointUUID !== 'undefined' && endpointUUID != null) {
+      if (typeof endpointUUID !== 'undefined' && endpointUUID != null) {
         var session = RtcommSessions.getSession(endpointUUID);
-        if (session !== null)
-          return (session.chats);
-        else
-          return (null);
-      } else{
-          return (null);
-      } */
+      }
 
       //mirar si se puede hacer aqui un get a la url especificada en la configuracion para recuperar los mensajes
 
