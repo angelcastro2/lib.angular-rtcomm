@@ -732,7 +732,7 @@
             session = RtcommSessions.getSession(endpoint.id);
             if (session === null) session = RtcommSessions.createSession(endpoint.id);
             // almacenamos los chats en la sesion
-            session.chats.push(chat);
+            session.chats.push(response.data);
 
           }).catch(function (response) {
             $log.error('rtcomm-service: PlaceCall: ERROR: fallo recuperando mensajes en el servidor');
