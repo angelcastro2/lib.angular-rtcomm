@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  * Angular module for Rtcomm
- * @version v1.0.34 - 2017-08-29
+ * @version v1.0.35 - 2017-08-29
  * @link https://github.com/WASdev/lib.angular-rtcomm
  * @author Brian Pulito <brian_pulito@us.ibm.com> (https://github.com/bpulito)
  */
@@ -1048,10 +1048,10 @@ angular
             $log.error('rtcomm-service: getChats: ERROR: fallo recuperando mensajes en el servidor');
             deferred.resolve([]);
           });
-          return deferred.promise;
+         
   
         }
-        
+        return deferred.promise;
 
     }
 
@@ -2072,16 +2072,21 @@ angular
 
             //	The data model for the chat is maintained in the RtcommService.
             vm.chats = [];
-            vm.chats = RtcommService.getChats(endpointUUID);
-            //RtcommService.getChatsAnteriores(vm);
+            RtcommService.getChats(endpointUUID).then(function(mensajes) {
+                vm.chats = mensajes;
+            });
+           
+           
             
             vm.chatActiveEndpointUUID = endpointUUID;
         });
 
         $scope.$on('noEndpointActivated', function (event) {
             vm.chats = [];
-            vm.chats = RtcommService.getChats();
-            //RtcommService.getChatsAnteriores(vm);
+            
+            RtcommService.getChats(endpointUUID).then(function(mensajes) {
+                vm.chats = mensajes;
+            });
             vm.chatActiveEndpointUUID = null;
         });
     }

@@ -111,16 +111,21 @@
 
             //	The data model for the chat is maintained in the RtcommService.
             vm.chats = [];
-            vm.chats = RtcommService.getChats(endpointUUID);
-            //RtcommService.getChatsAnteriores(vm);
+            RtcommService.getChats(endpointUUID).then(function(mensajes) {
+                vm.chats = mensajes;
+            });
+           
+           
             
             vm.chatActiveEndpointUUID = endpointUUID;
         });
 
         $scope.$on('noEndpointActivated', function (event) {
             vm.chats = [];
-            vm.chats = RtcommService.getChats();
-            //RtcommService.getChatsAnteriores(vm);
+            
+            RtcommService.getChats(endpointUUID).then(function(mensajes) {
+                vm.chats = mensajes;
+            });
             vm.chatActiveEndpointUUID = null;
         });
     }

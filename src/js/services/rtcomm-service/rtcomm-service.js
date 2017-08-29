@@ -625,10 +625,10 @@
             $log.error('rtcomm-service: getChats: ERROR: fallo recuperando mensajes en el servidor');
             deferred.resolve([]);
           });
-          return deferred.promise;
+         
   
         }
-        
+        return deferred.promise;
 
     }
 
