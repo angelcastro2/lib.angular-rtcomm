@@ -587,47 +587,30 @@
     function getChats(endpointUUID) {
       var configuracion = RtcommConfigService.getCustomConfig();
       var chatsServidor = [];
-
+      //mirar si se puede hacer aqui un get a la url especificada en la configuracion para recuperar los mensajes
+      if(configuracion.urlMensajes){
+        // aqui hacemos un get a la url indicada en la configuracón para recupèrar los mensajes
+          $http({
+            method: 'GET',
+            url: configuracion.urlMensajes,
+            params: {loginReceptor: configuracion.usuarioReceptor,
+              idgrupo: configuracion.grupo },
+            headers: {'Authorization': configuracion.authHeader}
+          }).then(function (response) {
+            chatsServidor = response.data;
+          }).catch(function (response) {
+            $log.error('rtcomm-service: getChats: ERROR: fallo recuperando mensajes en el servidor');
+          });
+        }
       if (typeof endpointUUID !== 'undefined' && endpointUUID != null) {
         var session = RtcommSessions.getSession(endpointUUID);
-        if (session !== null){
-          //mirar si se puede hacer aqui un get a la url especificada en la configuracion para recuperar los mensajes
-          if(configuracion.urlMensajes){
-            // aqui hacemos un get a la url indicada en la configuracón para recupèrar los mensajes
-              $http({
-                method: 'GET',
-                url: configuracion.urlMensajes,
-                params: {loginReceptor: configuracion.usuarioReceptor,
-                  idgrupo: configuracion.grupo },
-                headers: {'Authorization': configuracion.authHeader}
-              }).then(function (response) {
-                chatsServidor = response.data;
-              }).catch(function (response) {
-                $log.error('rtcomm-service: getChats: ERROR: fallo recuperando mensajes en el servidor');
-              });
-            }
+        if (session !== null)
+          //return (session.chats);
           return (chatsServidor);
-        }
-          
         else
-          return (null);
+          return (chatsServidor);
       } else{
-          //mirar si se puede hacer aqui un get a la url especificada en la configuracion para recuperar los mensajes
-          if(configuracion.urlMensajes){
-            // aqui hacemos un get a la url indicada en la configuracón para recupèrar los mensajes
-              $http({
-                method: 'GET',
-                url: configuracion.urlMensajes,
-                params: {loginReceptor: configuracion.usuarioReceptor,
-                  idgrupo: configuracion.grupo },
-                headers: {'Authorization': configuracion.authHeader}
-              }).then(function (response) {
-                chatsServidor = response.data;
-              }).catch(function (response) {
-                $log.error('rtcomm-service: getChats: ERROR: fallo recuperando mensajes en el servidor');
-              });
-            }
-            return (chatsServidor);
+          return (chatsServidor);
       }
         
 
@@ -753,7 +736,7 @@
       _setActiveEndpoint(endpoint.id);
       endpoint.connect(calleeID);
       //mirar si se puede hacer aqui un get a la url especificada en la configuracion para recuperar los mensajes
-      var configuracion = RtcommConfigService.getCustomConfig();
+      /* var configuracion = RtcommConfigService.getCustomConfig();
       if(configuracion.urlMensajes){
         // aqui hacemos un get a la url indicada en la configuracón para recupèrar los mensajes
           $http({
@@ -774,7 +757,7 @@
             $log.error('rtcomm-service: PlaceCall: ERROR: fallo recuperando mensajes en el servidor');
           });
   
-        }
+        } */
 
       return (endpoint.id);
     }
