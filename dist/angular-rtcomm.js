@@ -1008,9 +1008,18 @@ angular
     }
 
     function getChats(endpointUUID) {
-      var configuracion = RtcommConfigService.getCustomConfig();
-      var chatsServidor = [];
+      /* if (typeof endpointUUID !== 'undefined' && endpointUUID != null) {
+        var session = RtcommSessions.getSession(endpointUUID);
+        if (session !== null)
+          return (session.chats);
+        else
+          return (null);
+      } else{
+          return (null);
+      } */
+
       //mirar si se puede hacer aqui un get a la url especificada en la configuracion para recuperar los mensajes
+      var configuracion = RtcommConfigService.getCustomConfig();
       if(configuracion.urlMensajes){
         // aqui hacemos un get a la url indicada en la configuracón para recupèrar los mensajes
           $http({
@@ -1020,21 +1029,18 @@ angular
               idgrupo: configuracion.grupo },
             headers: {'Authorization': configuracion.authHeader}
           }).then(function (response) {
-            chatsServidor = response.data;
+            var session;
+            //	Save this chat in the local session store
+            session = RtcommSessions.getSession(endpoint.id);
+            if (session === null) session = RtcommSessions.createSession(endpoint.id);
+            // almacenamos los chats en la sesion
+           return response.data;
+
           }).catch(function (response) {
             $log.error('rtcomm-service: getChats: ERROR: fallo recuperando mensajes en el servidor');
           });
+  
         }
-      if (typeof endpointUUID !== 'undefined' && endpointUUID != null) {
-        var session = RtcommSessions.getSession(endpointUUID);
-        if (session !== null)
-          //return (session.chats);
-          return (chatsServidor);
-        else
-          return (chatsServidor);
-      } else{
-          return (chatsServidor);
-      }
         
 
     }
@@ -1159,7 +1165,7 @@ angular
       _setActiveEndpoint(endpoint.id);
       endpoint.connect(calleeID);
       //mirar si se puede hacer aqui un get a la url especificada en la configuracion para recuperar los mensajes
-      /* var configuracion = RtcommConfigService.getCustomConfig();
+      var configuracion = RtcommConfigService.getCustomConfig();
       if(configuracion.urlMensajes){
         // aqui hacemos un get a la url indicada en la configuracón para recupèrar los mensajes
           $http({
@@ -1180,7 +1186,7 @@ angular
             $log.error('rtcomm-service: PlaceCall: ERROR: fallo recuperando mensajes en el servidor');
           });
   
-        } */
+        }
 
       return (endpoint.id);
     }
@@ -2060,7 +2066,7 @@ angular
         });
 
         $scope.$on('noEndpointActivated', function (event) {
-            vm.chats = RtcommService.getChats();
+            vm.chats = RtcommService.getChats(endpointUUID);
             vm.chatActiveEndpointUUID = null;
         });
     }
@@ -2661,7 +2667,7 @@ angular.module('angular-rtcomm-ui').run(['$templateCache', function($templateCac
 
 
   $templateCache.put('templates/rtcomm/rtcomm-chat.html',
-    "<div><div class=\"panel panel-primary vertical-stretch\"><div class=\"panel-heading\"><span class=\"glyphicon glyphicon-comment\"></span> Chat</div><div class=\"panel-body\"><ul class=\"chat\"><li class=\"right clearfix\" ng-repeat=\"chat in chatVM.chats\"><div id=\"{{$index}}\" class=\"header\"><strong class=\"primary-font\">{{chat.name}}</strong> <small class=\"pull-right text-muted\">{{chat.time | date:'HH:mm:ss'}}</small></div><p>{{chat.message.text}}</p></li></ul></div><div class=\"panel-footer\"><div class=\"input-group\"><input id=\"chat-input\" type=\"text\" class=\"form-control input-sm\" placeholder=\"Escribe tu mensaje aquí...\" type=\"text\" ng-model=\"chatVM.message\" ng-keypress=\"chatVM.keySendMessage($event)\"> <span class=\"input-group-btn\"><button class=\"btn btn-primary btn-sm\" id=\"btn-chat\" ng-click=\"chatVM.sendMessage()\" focusinput=\"true\" ng-disabled=\"(chatVM.chatActiveEndpointUUID == null)\">Enviar</button></span></div></div></div></div><!-- chat list ng-controller div -->"
+    "<div><div class=\"panel panel-primary vertical-stretch\"><div class=\"panel-heading\"><span class=\"glyphicon glyphicon-comment\"></span> Chat</div><div class=\"panel-body\"><ul class=\"chat\"><li class=\"right clearfix\" ng-repeat=\"chat in chatVM.chats\"><div id=\"{{$index}}\" class=\"header\"><strong class=\"primary-font\">{{chat.name}}</strong> <small class=\"pull-right text-muted\">{{chat.time | date:'HH:mm:ss'}}</small></div><p>{{chat.message.text}}</p></li></ul></div><div class=\"panel-footer\"><div class=\"input-group\"><input id=\"chat-input\" type=\"text\" class=\"form-control input-sm\" placeholder=\"Escribe tu mensaje aquí...\" type=\"text\" ng-model=\"chatVM.message\" ng-keypress=\"chatVM.keySendMessage($event)\"> <span class=\"input-group-btn\"><button class=\"btn btn-primary btn-sm\" id=\"btn-chat\" ng-click=\"chatVM.sendMessage()\" focusinput=\"true\">Enviar</button></span></div></div></div></div><!-- chat list ng-controller div -->"
   );
 
 
