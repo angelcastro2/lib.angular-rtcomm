@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  * Angular module for Rtcomm
- * @version v1.0.25 - 2017-08-29
+ * @version v1.0.26 - 2017-08-29
  * @link https://github.com/WASdev/lib.angular-rtcomm
  * @author Brian Pulito <brian_pulito@us.ibm.com> (https://github.com/bpulito)
  */
@@ -2036,10 +2036,10 @@ angular
     }
 
     //Controller should be used to listen for events from Rtcmo
-    ChatController.$inject = ['$scope', 'RtcommService', '$log'];
+    ChatController.$inject = ['$scope', 'RtcommService', '$log', 'RtcommConfigService'];
 
     /* @ngInject */
-    function ChatController($scope, RtcommService, $log) {
+    function ChatController($scope, RtcommService, $log, RtcommConfigService) {
         var vm = this;
 
         vm.chatActiveEndpointUUID = RtcommService.getActiveEndpoint();
