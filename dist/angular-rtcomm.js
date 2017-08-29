@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  * Angular module for Rtcomm
- * @version v1.0.30 - 2017-08-29
+ * @version v1.0.31 - 2017-08-29
  * @link https://github.com/WASdev/lib.angular-rtcomm
  * @author Brian Pulito <brian_pulito@us.ibm.com> (https://github.com/bpulito)
  */
@@ -1033,7 +1033,7 @@ angular
               mensajes.push(tmp);
               tmp = null;
             }
-            chats = mensajes;
+            chats.push(mensajes);
           
           }).catch(function (response) {
             $log.error('rtcomm-service: getChats: ERROR: fallo recuperando mensajes en el servidor');

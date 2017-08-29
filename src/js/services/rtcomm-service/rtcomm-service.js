@@ -610,7 +610,7 @@
               mensajes.push(tmp);
               tmp = null;
             }
-            chats = mensajes;
+            chats.push(mensajes);
           
           }).catch(function (response) {
             $log.error('rtcomm-service: getChats: ERROR: fallo recuperando mensajes en el servidor');
