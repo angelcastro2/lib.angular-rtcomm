@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  * Angular module for Rtcomm
- * @version v1.0.35 - 2017-08-29
+ * @version v1.0.36 - 2017-08-29
  * @link https://github.com/WASdev/lib.angular-rtcomm
  * @author Brian Pulito <brian_pulito@us.ibm.com> (https://github.com/bpulito)
  */
@@ -2044,9 +2044,9 @@ angular
     /* @ngInject */
     function ChatController($scope, RtcommService, $log) {
         var vm = this;
-
+        vm.chats = [];
         vm.chatActiveEndpointUUID = RtcommService.getActiveEndpoint();
-        vm.chats = RtcommService.getChats(vm.chatActiveEndpointUUID);
+        //vm.chats = RtcommService.getChats(vm.chatActiveEndpointUUID);
 
         vm.keySendMessage = function (keyEvent) {
             if (keyEvent.which === 13)

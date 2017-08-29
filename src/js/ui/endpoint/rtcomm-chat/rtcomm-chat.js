@@ -83,9 +83,9 @@
     /* @ngInject */
     function ChatController($scope, RtcommService, $log) {
         var vm = this;
-
+        vm.chats = [];
         vm.chatActiveEndpointUUID = RtcommService.getActiveEndpoint();
-        vm.chats = RtcommService.getChats(vm.chatActiveEndpointUUID);
+        //vm.chats = RtcommService.getChats(vm.chatActiveEndpointUUID);
 
         vm.keySendMessage = function (keyEvent) {
             if (keyEvent.which === 13)
