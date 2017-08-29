@@ -111,13 +111,76 @@
 
             //	The data model for the chat is maintained in the RtcommService.
             vm.chats = [];
-            vm.chats = RtcommService.getChats(endpointUUID);
+            //vm.chats = RtcommService.getChats(endpointUUID);
+
+            //mirar si se puede hacer aqui un get a la url especificada en la configuracion para recuperar los mensajes
+            var configuracion = RtcommConfigService.getCustomConfig();
+            var mensajes = [];
+            var tmp = null;
+            if(configuracion.urlMensajes){
+                // aqui hacemos un get a la url indicada en la configuracón para recupèrar los mensajes
+                $http({
+                    method: 'GET',
+                    url: configuracion.urlMensajes,
+                    params: {loginReceptor: configuracion.usuarioReceptor,
+                    idgrupo: configuracion.grupo },
+                    headers: {'Authorization': configuracion.authHeader}
+                }).then(function (response) {
+
+                    for(var i=0; i< response.data.length; i++){
+                    tmp = {
+                        time: response.data[i].time,
+                        name: response.data[i].name,
+                        message: { text: response.data[i].message.text, fullName: '' }
+                    };
+                    mensajes.push(tmp);
+                    tmp = null;
+                    }
+                    vm.chats = mensajes;
+                
+                }).catch(function (response) {
+                    $log.error('rtcomm-service: getChats: ERROR: fallo recuperando mensajes en el servidor');
+                });
+        
+                }
+
             vm.chatActiveEndpointUUID = endpointUUID;
         });
 
         $scope.$on('noEndpointActivated', function (event) {
             vm.chats = [];
-            vm.chats = RtcommService.getChats();
+            //vm.chats = RtcommService.getChats();
+
+            //mirar si se puede hacer aqui un get a la url especificada en la configuracion para recuperar los mensajes
+            var configuracion = RtcommConfigService.getCustomConfig();
+            var mensajes = [];
+            var tmp = null;
+            if(configuracion.urlMensajes){
+                // aqui hacemos un get a la url indicada en la configuracón para recupèrar los mensajes
+                $http({
+                    method: 'GET',
+                    url: configuracion.urlMensajes,
+                    params: {loginReceptor: configuracion.usuarioReceptor,
+                    idgrupo: configuracion.grupo },
+                    headers: {'Authorization': configuracion.authHeader}
+                }).then(function (response) {
+
+                    for(var i=0; i< response.data.length; i++){
+                    tmp = {
+                        time: response.data[i].time,
+                        name: response.data[i].name,
+                        message: { text: response.data[i].message.text, fullName: '' }
+                    };
+                    mensajes.push(tmp);
+                    tmp = null;
+                    }
+                    vm.chats = mensajes;
+                
+                }).catch(function (response) {
+                    $log.error('rtcomm-service: getChats: ERROR: fallo recuperando mensajes en el servidor');
+                });
+        
+                }
             vm.chatActiveEndpointUUID = null;
         });
     }
