@@ -110,11 +110,13 @@
             $log.debug('rtcommChat: endpointActivated =' + endpointUUID);
 
             //	The data model for the chat is maintained in the RtcommService.
+            vm.chats = [];
             vm.chats = RtcommService.getChats(endpointUUID);
             vm.chatActiveEndpointUUID = endpointUUID;
         });
 
         $scope.$on('noEndpointActivated', function (event) {
+            vm.chats = [];
             vm.chats = RtcommService.getChats();
             vm.chatActiveEndpointUUID = null;
         });

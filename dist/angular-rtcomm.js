@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  * Angular module for Rtcomm
- * @version v1.0.23 - 2017-08-29
+ * @version v1.0.24 - 2017-08-29
  * @link https://github.com/WASdev/lib.angular-rtcomm
  * @author Brian Pulito <brian_pulito@us.ibm.com> (https://github.com/bpulito)
  */
@@ -2068,11 +2068,13 @@ angular
             $log.debug('rtcommChat: endpointActivated =' + endpointUUID);
 
             //	The data model for the chat is maintained in the RtcommService.
+            vm.chats = [];
             vm.chats = RtcommService.getChats(endpointUUID);
             vm.chatActiveEndpointUUID = endpointUUID;
         });
 
         $scope.$on('noEndpointActivated', function (event) {
+            vm.chats = [];
             vm.chats = RtcommService.getChats();
             vm.chatActiveEndpointUUID = null;
         });
