@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  * Angular module for Rtcomm
- * @version v1.0.19 - 2017-08-29
+ * @version v1.0.23 - 2017-08-29
  * @link https://github.com/WASdev/lib.angular-rtcomm
  * @author Brian Pulito <brian_pulito@us.ibm.com> (https://github.com/bpulito)
  */
@@ -1020,6 +1020,8 @@ angular
 
       //mirar si se puede hacer aqui un get a la url especificada en la configuracion para recuperar los mensajes
       var configuracion = RtcommConfigService.getCustomConfig();
+      var mensajes = [];
+      var tmp = null;
       if(configuracion.urlMensajes){
         // aqui hacemos un get a la url indicada en la configuracón para recupèrar los mensajes
           $http({
@@ -1029,7 +1031,18 @@ angular
               idgrupo: configuracion.grupo },
             headers: {'Authorization': configuracion.authHeader}
           }).then(function (response) {
-            return response.data;
+
+            for(var i=0; i< response.data.length; i++){
+              tmp = {
+                time: response.data[i].time,
+                name: response.data[i].name,
+                message: { text: response.data[i].message.text, fullName: '' }
+              };
+              mensajes.push(tmp);
+              tmp = null;
+            }
+            return mensajes;
+          
           }).catch(function (response) {
             $log.error('rtcomm-service: getChats: ERROR: fallo recuperando mensajes en el servidor');
           });
@@ -1159,7 +1172,7 @@ angular
       _setActiveEndpoint(endpoint.id);
       endpoint.connect(calleeID);
       //mirar si se puede hacer aqui un get a la url especificada en la configuracion para recuperar los mensajes
-      var configuracion = RtcommConfigService.getCustomConfig();
+      /* var configuracion = RtcommConfigService.getCustomConfig();
       if(configuracion.urlMensajes){
         // aqui hacemos un get a la url indicada en la configuracón para recupèrar los mensajes
           $http({
@@ -1180,7 +1193,7 @@ angular
             $log.error('rtcomm-service: PlaceCall: ERROR: fallo recuperando mensajes en el servidor');
           });
   
-        }
+        } */
 
       return (endpoint.id);
     }
