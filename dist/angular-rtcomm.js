@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  * Angular module for Rtcomm
- * @version v1.0.17 - 2017-08-29
+ * @version v1.0.18 - 2017-08-29
  * @link https://github.com/WASdev/lib.angular-rtcomm
  * @author Brian Pulito <brian_pulito@us.ibm.com> (https://github.com/bpulito)
  */
@@ -1008,15 +1008,51 @@ angular
     }
 
     function getChats(endpointUUID) {
+      var configuracion = RtcommConfigService.getCustomConfig();
+      var chatsServidor = [];
 
       if (typeof endpointUUID !== 'undefined' && endpointUUID != null) {
         var session = RtcommSessions.getSession(endpointUUID);
-        if (session !== null)
-          return (session.chats);
+        if (session !== null){
+          //mirar si se puede hacer aqui un get a la url especificada en la configuracion para recuperar los mensajes
+          if(configuracion.urlMensajes){
+            // aqui hacemos un get a la url indicada en la configuracón para recupèrar los mensajes
+              $http({
+                method: 'GET',
+                url: configuracion.urlMensajes,
+                params: {loginReceptor: configuracion.usuarioReceptor,
+                  idgrupo: configuracion.grupo },
+                headers: {'Authorization': configuracion.authHeader}
+              }).then(function (response) {
+                chatsServidor = response.data;
+              }).catch(function (response) {
+                $log.error('rtcomm-service: getChats: ERROR: fallo recuperando mensajes en el servidor');
+              });
+            }
+          return (chatsServidor);
+        }
+          
         else
           return (null);
-      } else
-        return (null);
+      } else{
+          //mirar si se puede hacer aqui un get a la url especificada en la configuracion para recuperar los mensajes
+          if(configuracion.urlMensajes){
+            // aqui hacemos un get a la url indicada en la configuracón para recupèrar los mensajes
+              $http({
+                method: 'GET',
+                url: configuracion.urlMensajes,
+                params: {loginReceptor: configuracion.usuarioReceptor,
+                  idgrupo: configuracion.grupo },
+                headers: {'Authorization': configuracion.authHeader}
+              }).then(function (response) {
+                chatsServidor = response.data;
+              }).catch(function (response) {
+                $log.error('rtcomm-service: getChats: ERROR: fallo recuperando mensajes en el servidor');
+              });
+            }
+            return (chatsServidor);
+      }
+        
 
     }
 
@@ -2041,7 +2077,7 @@ angular
         });
 
         $scope.$on('noEndpointActivated', function (event) {
-            vm.chats = [];
+            vm.chats = RtcommService.getChats();
             vm.chatActiveEndpointUUID = null;
         });
     }
