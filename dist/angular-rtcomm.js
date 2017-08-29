@@ -1029,13 +1029,7 @@ angular
               idgrupo: configuracion.grupo },
             headers: {'Authorization': configuracion.authHeader}
           }).then(function (response) {
-            var session;
-            //	Save this chat in the local session store
-            session = RtcommSessions.getSession(endpoint.id);
-            if (session === null) session = RtcommSessions.createSession(endpoint.id);
-            // almacenamos los chats en la sesion
-           return response.data;
-
+            return response.data;
           }).catch(function (response) {
             $log.error('rtcomm-service: getChats: ERROR: fallo recuperando mensajes en el servidor');
           });
