@@ -122,7 +122,7 @@
         });
 
         $scope.$on('noEndpointActivated', function (event) {
-            RtcommService.getChats(endpointUUID);
+            //RtcommService.getChats(endpointUUID);
             if(!vm.chats){
                 vm.chats = [];
                 RtcommService.getChatsAnteriores().then(function(mensajes) {

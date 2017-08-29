@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  * Angular module for Rtcomm
- * @version v1.0.38 - 2017-08-29
+ * @version v1.0.39 - 2017-08-29
  * @link https://github.com/WASdev/lib.angular-rtcomm
  * @author Brian Pulito <brian_pulito@us.ibm.com> (https://github.com/bpulito)
  */
@@ -2118,7 +2118,7 @@ angular
         });
 
         $scope.$on('noEndpointActivated', function (event) {
-            RtcommService.getChats(endpointUUID);
+            //RtcommService.getChats(endpointUUID);
             if(!vm.chats){
                 vm.chats = [];
                 RtcommService.getChatsAnteriores().then(function(mensajes) {
