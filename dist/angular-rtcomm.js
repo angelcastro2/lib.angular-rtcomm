@@ -2066,7 +2066,7 @@ angular
         });
 
         $scope.$on('noEndpointActivated', function (event) {
-            vm.chats = RtcommService.getChats(endpointUUID);
+            vm.chats = RtcommService.getChats();
             vm.chatActiveEndpointUUID = null;
         });
     }
