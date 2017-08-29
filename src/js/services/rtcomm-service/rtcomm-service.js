@@ -585,9 +585,18 @@
     }
 
     function getChats(endpointUUID) {
-      var configuracion = RtcommConfigService.getCustomConfig();
-      var chatsServidor = [];
+      /* if (typeof endpointUUID !== 'undefined' && endpointUUID != null) {
+        var session = RtcommSessions.getSession(endpointUUID);
+        if (session !== null)
+          return (session.chats);
+        else
+          return (null);
+      } else{
+          return (null);
+      } */
+
       //mirar si se puede hacer aqui un get a la url especificada en la configuracion para recuperar los mensajes
+      var configuracion = RtcommConfigService.getCustomConfig();
       if(configuracion.urlMensajes){
         // aqui hacemos un get a la url indicada en la configuracón para recupèrar los mensajes
           $http({
@@ -597,21 +606,18 @@
               idgrupo: configuracion.grupo },
             headers: {'Authorization': configuracion.authHeader}
           }).then(function (response) {
-            chatsServidor = response.data;
+            var session;
+            //	Save this chat in the local session store
+            session = RtcommSessions.getSession(endpoint.id);
+            if (session === null) session = RtcommSessions.createSession(endpoint.id);
+            // almacenamos los chats en la sesion
+           return response.data;
+
           }).catch(function (response) {
             $log.error('rtcomm-service: getChats: ERROR: fallo recuperando mensajes en el servidor');
           });
+  
         }
-      if (typeof endpointUUID !== 'undefined' && endpointUUID != null) {
-        var session = RtcommSessions.getSession(endpointUUID);
-        if (session !== null)
-          //return (session.chats);
-          return (chatsServidor);
-        else
-          return (chatsServidor);
-      } else{
-          return (chatsServidor);
-      }
         
 
     }
@@ -736,7 +742,7 @@
       _setActiveEndpoint(endpoint.id);
       endpoint.connect(calleeID);
       //mirar si se puede hacer aqui un get a la url especificada en la configuracion para recuperar los mensajes
-      /* var configuracion = RtcommConfigService.getCustomConfig();
+      var configuracion = RtcommConfigService.getCustomConfig();
       if(configuracion.urlMensajes){
         // aqui hacemos un get a la url indicada en la configuracón para recupèrar los mensajes
           $http({
@@ -757,7 +763,7 @@
             $log.error('rtcomm-service: PlaceCall: ERROR: fallo recuperando mensajes en el servidor');
           });
   
-        } */
+        }
 
       return (endpoint.id);
     }
