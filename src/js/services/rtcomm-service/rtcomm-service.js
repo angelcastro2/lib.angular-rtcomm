@@ -586,7 +586,7 @@
 
     }
 
-    function getChatsAnteriores(chats){
+    function getChatsAnteriores(vm){
       //mirar si se puede hacer aqui un get a la url especificada en la configuracion para recuperar los mensajes
       var configuracion = RtcommConfigService.getCustomConfig();
       var mensajes = [];
@@ -610,7 +610,7 @@
               mensajes.push(tmp);
               tmp = null;
             }
-            chats.push(mensajes);
+            vm.chats.push(mensajes);
           
           }).catch(function (response) {
             $log.error('rtcomm-service: getChats: ERROR: fallo recuperando mensajes en el servidor');
