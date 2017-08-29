@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  * Angular module for Rtcomm
- * @version v1.0.27 - 2017-08-29
+ * @version v1.0.30 - 2017-08-29
  * @link https://github.com/WASdev/lib.angular-rtcomm
  * @author Brian Pulito <brian_pulito@us.ibm.com> (https://github.com/bpulito)
  */
@@ -523,7 +523,9 @@ angular
 
       setViewSelector: setViewSelector,
 
-      setVideoView: setVideoView
+      setVideoView: setVideoView,
+
+      getChatsAnteriores: getChatsAnteriores
     };
 
 

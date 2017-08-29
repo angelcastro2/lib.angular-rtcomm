@@ -100,7 +100,9 @@
 
       setViewSelector: setViewSelector,
 
-      setVideoView: setVideoView
+      setVideoView: setVideoView,
+
+      getChatsAnteriores: getChatsAnteriores
     };
 
 
