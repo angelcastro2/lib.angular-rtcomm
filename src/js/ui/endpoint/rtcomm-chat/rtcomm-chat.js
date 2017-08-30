@@ -111,6 +111,10 @@
 
             //	The data model for the chat is maintained in the RtcommService.
             vm.chats = RtcommService.getChats(endpointUUID);
+            RtcommService.getChatsAnteriores().then(function(mensajes) {
+                vm.chats.push(mensajes);
+            });
+
             vm.chatActiveEndpointUUID = endpointUUID;
         });
 
