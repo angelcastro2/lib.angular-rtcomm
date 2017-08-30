@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  * Angular module for Rtcomm
- * @version v1.0.5 - 2017-06-20
+ * @version v1.0.5 - 2017-08-30
  * @link https://github.com/WASdev/lib.angular-rtcomm
  * @author Brian Pulito <brian_pulito@us.ibm.com> (https://github.com/bpulito)
  */
@@ -2499,14 +2499,14 @@ angular
 
         vm.placeCall = function(size) {
 
-            var modalInstance = $uibModal.open({
+            /* var modalInstance = $uibModal.open({
                 templateUrl: 'templates/rtcomm/rtcomm-modal-call.html',
                 controller: 'RtcommCallModalInstanceController',
                 size: size,
                 resolve: {}
-            });
-
-            modalInstance.result.then(
+            }); */
+            RtcommService.placeCall(vm.calleeID, vm.mediaToEnable);
+            /* modalInstance.result.then(
                 function(resultName) {
                     $log.debug('rtcommCallModal: Calling calleeID: ' + vm.calleeID);
                     $log.debug('rtcommCallModal: CallerID: ' + resultName);
@@ -2521,7 +2521,7 @@ angular
                 },
                 function() {
                     $log.info('Modal dismissed at: ' + new Date());
-                });
+                }); */
         };
 
         $scope.$on('rtcomm::init', function(event, success, details) {
@@ -2563,7 +2563,7 @@ angular.module('angular-rtcomm-ui').run(['$templateCache', function($templateCac
 
 
   $templateCache.put('templates/rtcomm/rtcomm-chat.html',
-    "<div><div class=\"panel panel-primary vertical-stretch\"><div class=\"panel-heading\"><span class=\"glyphicon glyphicon-comment\"></span> Chat</div><div class=\"panel-body\"><ul class=\"chat\"><li class=\"right clearfix\" ng-repeat=\"chat in chatVM.chats\"><div id=\"{{$index}}\" class=\"header\"><strong class=\"primary-font\">{{chat.message.fullName}}</strong> <small class=\"pull-right text-muted\">{{chat.time | date:'HH:mm:ss'}}</small></div><p>{{chat.message.text}}</p></li></ul></div><div class=\"panel-footer\"><div class=\"input-group\"><input id=\"chat-input\" type=\"text\" class=\"form-control input-sm\" placeholder=\"Escribe tu mensaje aquí...\" type=\"text\" ng-model=\"chatVM.message\" ng-keypress=\"chatVM.keySendMessage($event)\"> <span class=\"input-group-btn\"><button class=\"btn btn-primary btn-sm\" id=\"btn-chat\" ng-click=\"chatVM.sendMessage()\" focusinput=\"true\" ng-disabled=\"(chatVM.chatActiveEndpointUUID == null)\">Enviar</button></span></div></div></div></div><!-- chat list ng-controller div -->"
+    "<div><div class=\"panel panel-primary vertical-stretch\"><div class=\"panel-heading\"><span class=\"glyphicon glyphicon-comment\"></span> Chat</div><div class=\"panel-body\"><ul class=\"chat\"><li class=\"right clearfix\" ng-repeat=\"chat in chatVM.chats\"><div id=\"{{$index}}\" class=\"header\"><strong class=\"primary-font\">{{chat.name}}</strong> <small class=\"pull-right text-muted\">{{chat.time | date:'HH:mm:ss'}}</small></div><p>{{chat.message.text}}</p></li></ul></div><div class=\"panel-footer\"><div class=\"input-group\"><input id=\"chat-input\" type=\"text\" class=\"form-control input-sm\" placeholder=\"Escribe tu mensaje aquí...\" type=\"text\" ng-model=\"chatVM.message\" ng-keypress=\"chatVM.keySendMessage($event)\"> <span class=\"input-group-btn\"><button class=\"btn btn-primary btn-sm\" id=\"btn-chat\" ng-click=\"chatVM.sendMessage()\" focusinput=\"true\" ng-disabled=\"(chatVM.chatActiveEndpointUUID == null)\">Enviar</button></span></div></div></div></div><!-- chat list ng-controller div -->"
   );
 
 
@@ -2578,7 +2578,7 @@ angular.module('angular-rtcomm-ui').run(['$templateCache', function($templateCac
 
 
   $templateCache.put('templates/rtcomm/rtcomm-modal-alert.html',
-    "<div class=\"modal-header\"><button type=\"button\" class=\"close\" ng-click=\"close(false)\" data-dismiss=\"modal\" aria-hidden=\"true\">&times;</button><h4 class=\"modal-title\">New call alert</h4></div><div class=\"modal-body\"><p>Do you want to accept a call from {{caller}}.</p></div><div class=\"modal-footer\"><button type=\"button\" ng-click=\"ok()\" class=\"btn btn-default\" data-dismiss=\"modal\">Yes</button> <button type=\"button\" ng-click=\"cancel()\" class=\"btn btn-primary\" data-dismiss=\"modal\">No</button></div>"
+    "<div class=\"modal-header\"><button type=\"button\" class=\"close\" ng-click=\"close(false)\" data-dismiss=\"modal\" aria-hidden=\"true\">&times;</button><h4 class=\"modal-title\">Nueva tutoría</h4></div><div class=\"modal-body\"><p>El usuario {{caller}} solicita una tutoría, ¿desea aceptar?.</p></div><div class=\"modal-footer\"><button type=\"button\" ng-click=\"ok()\" class=\"btn btn-default\" data-dismiss=\"modal\">Si</button> <button type=\"button\" ng-click=\"cancel()\" class=\"btn btn-primary\" data-dismiss=\"modal\">No</button></div>"
   );
 
 
