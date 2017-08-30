@@ -35,7 +35,8 @@
       getRingBackTone: getRingBackTone,
       getRtcommDebug: getRtcommDebug,
       isRtcommDisabled: isRtcommDisabled,
-      getMediaConfig: getMediaConfig
+      getMediaConfig: getMediaConfig,
+      getCustomConfig: getCustomConfig
     };
 
     //Default provider
@@ -50,6 +51,13 @@
         topic: ''
       }
     };
+
+    var customConfig = {
+      urlMensajes: '',
+      authHeader: '',
+      usuarioReceptor: '',
+      grupo: ''
+    }
 
     //Rtcomm Endpoint Config Defaults
     var mediaConfig = {
@@ -91,6 +99,13 @@
         },
         userid: (typeof config.userid !== 'undefined') ? config.userid : providerConfig.userid
       };
+      //configuracion personalizada para soportar nuevos elementos a parte de los de rtcomm
+      customConfig = {
+        urlMensajes: (typeof config.urlMensajes !== 'undefined')? config.urlMensajes : customConfig.urlMensajes,
+        authHeader: (typeof config.authHeader !== 'undefined')? config.authHeader : customConfig.authHeader,
+        usuarioReceptor: (typeof config.usuarioReceptor !== 'undefined')? config.usuarioReceptor : customConfig.usuarioReceptor,
+        grupo: (typeof config.grupo !== 'undefined')? config.grupo : customConfig.grupo
+      }
 
       //Media Configuration
       mediaConfig = {
@@ -154,6 +169,10 @@
 
     function getMediaConfig() {
       return mediaConfig;
+    }
+
+    function getCustomConfig() {
+      return customConfig;
     }
   }
 })();

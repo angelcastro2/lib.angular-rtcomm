@@ -100,7 +100,9 @@
 
       setViewSelector: setViewSelector,
 
-      setVideoView: setVideoView
+      setVideoView: setVideoView,
+
+      getChatsAnteriores: getChatsAnteriores
     };
 
 
@@ -554,6 +556,33 @@
 
       session.chats.push(chat);
 
+      //recuperar la url y la cabecera de autenticacion de la configuracion y luego hacer la peticion con ellos
+      var configuracion = RtcommConfigService.getCustomConfig();
+      //comprobamos si están definidos los parámetros de configuración, si no lo están no hacemos la petición
+      if(configuracion.urlMensajes){
+      // aqui hacemos un post a la url indicada en la configuracón para guardar los mensajes
+        //antes de hacer nada guardamos en el objeto chat el nombre del usuario que recibe el mensaje
+        if(configuracion.usuarioReceptor){
+          chat.nameUsuarioRecibe = configuracion.usuarioReceptor;
+        }
+        if(configuracion.grupo){
+          chat.grupo = configuracion.grupo;
+        }
+        
+        $http({
+          method: 'POST',
+          url: configuracion.urlMensajes,
+          params: {},
+          headers: {'Authorization': configuracion.authHeader},
+          data: chat
+        }).then(function (response) {
+          //no se hace nada
+        }).catch(function (response) {
+          $log.error('rtcomm-service: ChatMessage: ERROR: fallo guardando mensajes en el servidor');
+        });
+
+      }
+      
       myEndpointProvider.getRtcommEndpoint(endpointUUID).chat.send(chat.message);
 
     }
@@ -753,6 +782,48 @@
           mediaIn: document.querySelector('#' + _remoteView)
         });
       }
+    }
+
+
+
+
+    function getChatsAnteriores(){
+      //mirar si se puede hacer aqui un get a la url especificada en la configuracion para recuperar los mensajes
+
+      var deferred = $q.defer();
+      var configuracion = RtcommConfigService.getCustomConfig();
+      var mensajes = [];
+      var tmp = null;
+      if(configuracion.urlMensajes){
+        // aqui hacemos un get a la url indicada en la configuracón para recupèrar los mensajes
+          $http({
+            method: 'GET',
+            url: configuracion.urlMensajes,
+            params: {loginReceptor: configuracion.usuarioReceptor,
+              idgrupo: configuracion.grupo },
+            headers: {'Authorization': configuracion.authHeader}
+          }).then(function (response) {
+
+            for(var i=0; i< response.data.length; i++){
+              tmp = {
+                time: response.data[i].time,
+                name: response.data[i].name,
+                message: { text: response.data[i].message.text, fullName: '' }
+              };
+              mensajes.push(tmp);
+              tmp = null;
+            }
+            deferred.resolve(mensajes);
+          
+          }).catch(function (response) {
+            $log.error('rtcomm-service: getChats: ERROR: fallo recuperando mensajes en el servidor');
+            deferred.resolve([]);
+          });
+         
+  
+        }
+        return deferred.promise;
+
     }
   }
 })();
