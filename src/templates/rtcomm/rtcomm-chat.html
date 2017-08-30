@@ -6,7 +6,7 @@
 
         <div class="panel-body">
             <ul class="chat">
-                <li class="right clearfix" ng-repeat="chat in chatVM.chats">
+                <li ng-if="!(chatVM.chatActiveEndpointUUID == null)" class="right clearfix" ng-repeat="chat in chatVM.chats">
                     <div id={{$index}} class="header">
                         <strong class="primary-font">{{chat.name}}</strong>
                         <small class="pull-right text-muted">
@@ -14,6 +14,9 @@
                         </small>
                     </div>
                     <p>{{chat.message.text}}</p>
+                </li>
+                <li ng-if="(chatVM.chatActiveEndpointUUID == null)" class="right clearfix">
+                    <p>Usuario no conectado o aún no ha aceptado la tutoría</p>
                 </li>
             </ul>
         </div>
